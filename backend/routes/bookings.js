@@ -3,7 +3,7 @@ import { createReview } from "../controllers/reviewController.js";
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 import {
   createBooking,
-  getAllBookin,
+  getAllBooking,
   getBooking,
 } from "../controllers/bookingController.js";
 
