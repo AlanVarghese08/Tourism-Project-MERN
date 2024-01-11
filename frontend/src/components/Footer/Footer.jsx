@@ -105,7 +105,7 @@ export const Footer = () => {
                   </span>
                   Address:
                 </h6>
-                <p className="mb-0">Sylhet,Bangladesh</p>
+                <p className="mb-0">Adimali,India</p>
               </ListGroupItem>
               <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
                 <h6 className="mb-0 d-flex align-items-center gap-2">
@@ -114,7 +114,7 @@ export const Footer = () => {
                   </span>
                   Email:
                 </h6>
-                <p className="mb-0">dev.muhi@gmail.com</p>
+                <p className="mb-0">tourworld@gmail.com</p>
               </ListGroupItem>
 
               <ListGroupItem className="ps-0 border-0 d-flex align-items-center gap-3">
