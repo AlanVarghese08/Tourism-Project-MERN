@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CommonSection from "../shared/CommonSection";
 import "../styles/tour.css";
-import Newsletter from "./../shared/Newsletter";
 import TourCard from "./../shared/TourCard";
 import SearchBar from "./../shared/SearchBar";
 import { Col, Container, Row } from "reactstrap";
@@ -68,7 +67,6 @@ const Tours = () => {
           )}
         </Container>
       </section>
-      <Newsletter />
     </>
   );
 };
