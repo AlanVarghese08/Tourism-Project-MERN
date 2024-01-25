@@ -19,6 +19,7 @@ const Booking = ({ tour, avgRating }) => {
     phone: "",
     guestSize: 1,
     bookAt: "",
+    status: "Requested",
   });
 
   const handleChange = (e) => {
@@ -67,7 +68,6 @@ const Booking = ({ tour, avgRating }) => {
           {avgRating == 0 ? null : avgRating} ({reviews?.length})
         </span>
       </div>
-      {/*================booking form===========*/}
       <div className="booking__form">
         <h5>Information</h5>
         <Form className="booking__info-form" onSubmit={handleClick}>

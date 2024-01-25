@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import "../styles/login.css";
-
 import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { Button, Col, Container, Form, FormGroup, Row } from "reactstrap";
@@ -34,12 +33,24 @@ const Login = () => {
       });
 
       const result = await res.json();
-      if (!res.ok) alert(result.message);
 
-      console.log(result.data);
+      if (!res.ok) {
+        alert(result.message);
+        dispatch({ type: "LOGIN_FAILURE", payload: result.message });
+        return;
+      }
+
+      const userRole = result.role;
 
       dispatch({ type: "LOGIN_SUCCESS", payload: result.data });
-      navigate("/");
+
+      if (userRole === "user") {
+        navigate("/home");
+      } else if (userRole === "admin") {
+        navigate("/adminhome");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.message });
     }

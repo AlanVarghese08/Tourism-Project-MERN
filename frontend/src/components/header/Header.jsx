@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useContext } from "react";
-
+import React, { useRef, useEffect, useContext, useState } from "react";
 import { Container, Row, Button } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,23 +6,56 @@ import logo from "../../assets/images/logo.png";
 import "./header.css";
 import { AuthContext } from "../../context/AuthContext";
 
-const nav__links = [
+const navLinks = [
   {
     path: "/home",
-
     display: "Home",
   },
-
   {
     path: "/about",
-
     display: "About",
   },
-
   {
     path: "/tours",
-
     display: "Tours",
+  },
+];
+
+const navUserLinks = [
+  {
+    path: "/home",
+    display: "Home",
+  },
+  {
+    path: "/userbookings",
+    display: "My bookings",
+  },
+  {
+    path: "/tours",
+    display: "Tours",
+  },
+  {
+    path: "/profile",
+    display: "My profile",
+  },
+];
+
+const navAdminLinks = [
+  {
+    path: "/adminHome",
+    display: "Dashboard",
+  },
+  {
+    path: "/users",
+    display: "Users",
+  },
+  {
+    path: "/toursadmin",
+    display: "Tours",
+  },
+  {
+    path: "/bookings",
+    display: "Bookings",
   },
 ];
 
@@ -32,10 +64,19 @@ const Header = () => {
   const menuRef = useRef(null);
   const navigate = useNavigate();
   const { user, dispatch } = useContext(AuthContext);
+  const [userRole, setUserRole] = useState("user");
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
+  };
+
+  const getUserRole = () => {
+    try {
+      setUserRole(user?.role);
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
   };
 
   const stickyHeaderFunc = () => {
@@ -53,42 +94,66 @@ const Header = () => {
 
   useEffect(() => {
     stickyHeaderFunc();
-
-    return window.removeEventListener("scroll", stickyHeaderFunc);
-  });
+    getUserRole();
+    return () => window.removeEventListener("scroll", stickyHeaderFunc);
+  }, [user]);
 
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
+
   return (
     <header className="header" ref={headerRef}>
       <Container>
         <Row>
           <div className="nav_wrapper d-flex align-items-center justify-content-between">
-            {/*=========== logo============*/}
-
             <div className="logo">
-              {" "}
               <img src={logo} alt="" />
             </div>
-
-            {/*=============logo end==========*/}
-            {/*=============lmenu start==========*/}
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
               <ul className="menu d-flex align-items-center gap-5">
-                {nav__links.map((item, index) => (
-                  <li className="nav__item" key={index}>
-                    <NavLink
-                      to={item.path}
-                      className={(navClass) =>
-                        navClass.isActive ? "active__link" : ""
-                      }
-                    >
-                      {item.display}
-                    </NavLink>
-                  </li>
-                ))}
+                {(() => {
+                  if (userRole === "admin") {
+                    return navAdminLinks.map((item, index) => (
+                      <li className="nav__item" key={index}>
+                        <NavLink
+                          to={item.path}
+                          className={(navClass) =>
+                            navClass.isActive ? "active__link" : ""
+                          }
+                        >
+                          {item.display}
+                        </NavLink>
+                      </li>
+                    ));
+                  } else if (userRole === "user") {
+                    return navUserLinks.map((item, index) => (
+                      <li className="nav__item" key={index}>
+                        <NavLink
+                          to={item.path}
+                          className={(navClass) =>
+                            navClass.isActive ? "active__link" : ""
+                          }
+                        >
+                          {item.display}
+                        </NavLink>
+                      </li>
+                    ));
+                  } else {
+                    return navLinks.map((item, index) => (
+                      <li className="nav__item" key={index}>
+                        <NavLink
+                          to={item.path}
+                          className={(navClass) =>
+                            navClass.isActive ? "active__link" : ""
+                          }
+                        >
+                          {item.display}
+                        </NavLink>
+                      </li>
+                    ));
+                  }
+                })()}
               </ul>
             </div>
-            {/*=============menu end==========*/}
             <div className="nav__right d-flex align-items-center gap-4">
               <div className="nav__btns d-flex align-items-center gap-4">
                 {user ? (
@@ -110,7 +175,7 @@ const Header = () => {
                 )}
               </div>
               <span className="mobile__menu" onClick={toggleMenu}>
-                <i class="ri-menu-line"></i>
+                <i className="ri-menu-line"></i>
               </span>
             </div>
           </div>

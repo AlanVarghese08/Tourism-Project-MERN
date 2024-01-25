@@ -21,7 +21,6 @@ export const register = async (req, res) => {
       .json({ success: false, message: "Failed to create.try agin" });
   }
 };
-
 export const login = async (req, res) => {
   const email = req.body.email;
 
@@ -45,7 +44,7 @@ export const login = async (req, res) => {
         .json({ success: false, message: "Incorrect email or password" });
     }
 
-    const { password, role, ...rest } = user._doc;
+    const { password, ...rest } = user._doc;
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
@@ -62,9 +61,19 @@ export const login = async (req, res) => {
       .json({
         token,
         data: { ...rest },
-        role,
+        role: user.role,
       });
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to login" });
   }
+};
+
+export const getUserId = (req, res, next) => {
+  const userId = req.cookies && req.cookies.userId;
+
+  if (userId) {
+    req.user = { id: userId };
+  }
+
+  next();
 };

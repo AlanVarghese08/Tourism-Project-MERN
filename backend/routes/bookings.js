@@ -5,12 +5,17 @@ import {
   createBooking,
   getAllBooking,
   getBooking,
+  updateBookingStatus,
+  deleteBooking,
+  getBookingsByUserId,
 } from "../controllers/bookingController.js";
 
 const router = express.Router();
 
-router.post("/", verifyUser, createBooking);
-router.get("/:id", verifyUser, getBooking);
-router.get("/", verifyAdmin, getAllBooking);
+router.post("/", createBooking);
+router.get("/userbookings/:userId", getBookingsByUserId);
+router.patch("/:id", updateBookingStatus);
+router.get("/", getAllBooking);
+router.delete("/:id", deleteBooking);
 
 export default router;

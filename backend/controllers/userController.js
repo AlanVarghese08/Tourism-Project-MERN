@@ -54,7 +54,8 @@ export const deleteUser = async (req, res) => {
       message: "Successfully deleted",
     });
   } catch (err) {
-    res.status(500).json({
+    console.error("Error in userCounts:", err);
+    res.status(404).json({
       success: false,
       message: "failed to delete",
     });
@@ -82,11 +83,11 @@ export const getSingleUser = async (req, res) => {
 
 export const getAllUser = async (req, res) => {
   try {
-    const users = await User.find({});
-
+    const users = await User.find({ role: "user" });
+    const userCount = await User.countDocuments({ role: "user" });
     res.status(200).json({
       success: true,
-      count: users.length,
+      count: userCount,
       message: "Successful",
       data: users,
     });
@@ -97,3 +98,20 @@ export const getAllUser = async (req, res) => {
     });
   }
 };
+
+// export const userCounts = async (req, res) => {
+//   try {
+//     const userCount = await User.countDocuments({});
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Successful",
+//       data: userCount,
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Not found",
+//     });
+//   }
+// };
